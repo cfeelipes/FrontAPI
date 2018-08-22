@@ -18,18 +18,25 @@ function cadastrar() {
     carregaEstudantes();
 }
 
-function cancelar() {
+function novoAluno() {
     var btnSalvar = document.querySelector('#btnSalvar');
-    var btnCancelar = document.querySelector('#btnCancelar');
     document.querySelector('#nome').value = '';
     document.querySelector('#nobrenome').value = '';
     document.querySelector('#telefone').value = '';
     document.querySelector('#ra').value = '';
-
     aluno = {};
     btnSalvar.textContent = 'Cadastrar';
-    btnCancelar.textContent = 'Limpar';
+    $('#cadastroModal').modal('show');
+}
 
+function cancelar() {
+    var btnSalvar = document.querySelector('#btnSalvar');
+    document.querySelector('#nome').value = '';
+    document.querySelector('#nobrenome').value = '';
+    document.querySelector('#telefone').value = '';
+    document.querySelector('#ra').value = '';
+    aluno = {};
+    btnSalvar.textContent = 'Cadastrar';
     $('#cadastroModal').modal('hide');
 }
 
@@ -88,6 +95,30 @@ function deletarEstudante(id) {
     var xhr = new XMLHttpRequest();           
     xhr.open('DELETE', `http://localhost:59189/api/Teste/${id}`, false);
     xhr.send();
+}
+
+function excluir(id) {
+    bootbox.confirm({
+        message: "This is a confirm with custom button text and color! Do you like it?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            console.log('This was logged in the callback: ' + result);
+        }
+    });
+
+    if (confirm("Tem certeza que deseja excluir o estudante?")) {
+        excluirEstudante(id);
+        carregaEstudantes();
+    }
 }
 
 function deletar(id) {
