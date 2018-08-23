@@ -97,28 +97,26 @@ function deletarEstudante(id) {
     xhr.send();
 }
 
-function excluir(id) {
+function excluir(estudante) {
     bootbox.confirm({
-        message: "This is a confirm with custom button text and color! Do you like it?",
+        message: `Tem certeza que deseja excluir o estudante ${estudante.Nome} ${estudante.Sobrenome}?`,
         buttons: {
             confirm: {
-                label: 'Yes',
+                label: 'Sim',
                 className: 'btn-success'
             },
             cancel: {
-                label: 'No',
+                label: 'Não',
                 className: 'btn-danger'
             }
         },
         callback: function (result) {
-            console.log('This was logged in the callback: ' + result);
+            if (result) {
+                deletarEstudante(estudante.Id);
+                carregaEstudantes();
+            }
         }
     });
-
-    if (confirm("Tem certeza que deseja excluir o estudante?")) {
-        excluirEstudante(id);
-        carregaEstudantes();
-    }
 }
 
 function deletar(id) {
@@ -129,15 +127,15 @@ function deletar(id) {
 
 function adicionaLinha(estudante) {
     var trow = `<tr>
-                    <td>${estudante.Nome}</td>
-                    <td>${estudante.Sobrenome}</td>
-                    <td>${estudante.Telefone}</td>
-                    <td>${estudante.Ra}</td>
-                    <td>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#cadastroModal" onclick='editarEstudante(${JSON.stringify(estudante)})'>Editar</button>
-                        <button class="btn btn-danger" onclick='deletar(${estudante.Id})'>Deletar</button>
-                    </td>
-                </tr>
-               `
+    <td>${estudante.Nome}</td>
+    <td>${estudante.Sobrenome}</td>
+    <td>${estudante.Telefone}</td>
+    <td>${estudante.Ra}</td>
+    <td>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#cadastroModal" onclick='editarEstudante(${JSON.stringify(estudante)})'>Editar</button>
+    <button class="btn btn-danger" onclick='excluir(${JSON.stringify(estudante)})'>Deletar</button>
+    </td>
+    </tr>
+    `
     tbody.innerHTML += trow;
 }
